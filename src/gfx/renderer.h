@@ -12,6 +12,11 @@ namespace GFX
   struct Camera;
   struct Mesh;
 
+  struct Heightmap
+  {
+
+  };
+
   class Renderer
   {
   public:
@@ -27,6 +32,8 @@ namespace GFX
       const MeshHandle& mesh,
       const Renderable& renderable);
     void EndDraw(const Camera& camera, float dt);
+
+    void DrawHeightmap(const Camera& camera, Heightmap heightmap);
 
   private:
     struct RendererImpl* impl_;

@@ -112,6 +112,8 @@ namespace GFX
     GLuint standardVao{};
     Shader standardShader{};
     Shader environmentShader{};
+    Shader heightmapShader{};
+
     std::vector<RenderTuple> renderables;
     glm::vec3 sunDir = { 0, -1, 0 };
     float blendDay = 0;
@@ -140,8 +142,9 @@ namespace GFX
 
       standardShader = LoadVertexFragmentProgram("standard.vert.glsl", "standard.frag.glsl");
       environmentShader = LoadVertexFragmentProgram("environment.vert.glsl", "environment.frag.glsl");
+      heightmapShader = LoadVertexFragmentProgram("heightmap.vert.glsl", "heightmap.frag.glsl");
 
-#if !NDEBUG
+#ifndef NDEBUG
       // enable debugging stuff
       glEnable(GL_DEBUG_OUTPUT);
       glDebugMessageCallback(glErrorCallback, NULL);
@@ -282,6 +285,19 @@ namespace GFX
       glBindVertexArray(emptyVao);
       glDrawArrays(GL_TRIANGLES, 0, 3);
     }
+
+    void DrawHeightmap(const Camera& camera, Heightmap heightmap)
+    {
+      glm::mat4 model(1);
+      model = glm::scale(model, glm::vec3(5));
+
+      heightmapShader.Bind();
+      heightmapShader.SetMat4("u_viewProj", camera.GetViewProj());
+      heightmapShader.SetMat4("u_model", model);
+
+      glBindVertexArray(emptyVao);
+      glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
   };
 
   Renderer::Renderer()
@@ -323,5 +339,10 @@ namespace GFX
   void Renderer::EndDraw(const Camera& camera, float dt)
   {
     impl_->EndDraw(camera, dt);
+  }
+
+  void Renderer::DrawHeightmap(const Camera& camera, Heightmap heightmap)
+  {
+    impl_->DrawHeightmap(camera, heightmap);
   }
 }

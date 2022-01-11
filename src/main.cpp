@@ -259,6 +259,8 @@ auto main() -> int
       });
     renderer.EndDraw(world.camera, dt);
 
+    renderer.DrawHeightmap(world.camera, GFX::Heightmap{});
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     ImGui::EndFrame();
