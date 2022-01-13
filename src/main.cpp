@@ -22,6 +22,7 @@
 #include "gfx/camera.h"
 #include "engine.h"
 #include "world.h"
+#include "sim/erosion.h"
 
 struct WindowCreateInfo
 {
@@ -108,7 +109,10 @@ auto main() -> int
   //world.camera.proj = glm::ortho(-50, 50, -50, 50, 1, 350);
   world.camera.viewInfo.position = { -5.5, 3, 0 };
 
-  world.MakeBox({ 5, 5, 5 }, { 1, 2, 1 });
+  //world.MakeBox({ 5, 5, 5 }, { 1, 2, 1 });
+
+  Erosion::Simulation simulation(100, 100);
+  simulation.Init(0);
 
   double prevFrame = glfwGetTime();
   while (!glfwWindowShouldClose(window))
@@ -221,7 +225,7 @@ auto main() -> int
 
       const glm::vec3 forward = world.camera.viewInfo.GetForwardDir();
       const glm::vec3 up = { 0, 1, 0 };
-      const glm::vec3 right = glm::cross(forward, up);
+      const glm::vec3 right = glm::normalize(glm::cross(forward, up));
 
       if (world.io->KeysDown[GLFW_KEY_W])
       {
@@ -259,7 +263,7 @@ auto main() -> int
       });
     renderer.EndDraw(world.camera, dt);
 
-    renderer.DrawHeightmap(world.camera, GFX::Heightmap{});
+    renderer.DrawHeightmap(world.camera, simulation.GetHeightmap());
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

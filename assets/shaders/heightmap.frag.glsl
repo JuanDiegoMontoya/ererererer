@@ -2,14 +2,14 @@
 
 in VS_OUT
 {
-  vec3 vPosition;
-  vec3 vNormal;
-  vec2 vTexcoord;
+  vec3 position;
+  vec3 normal;
+  vec2 uv;
 }fs_in;
 
 out vec4 fragColor;
 
 void main()
 {
-  fragColor = vec4(1, 0, 0, 1);
+  fragColor = vec4(fs_in.uv, 0, 1);
 }

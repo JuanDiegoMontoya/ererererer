@@ -14,7 +14,9 @@ namespace GFX
 
   struct Heightmap
   {
-
+    uint32_t width{ 1 };
+    uint32_t height{ 1 };
+    uint32_t texture{};
   };
 
   class Renderer

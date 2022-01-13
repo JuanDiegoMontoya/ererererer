@@ -289,14 +289,18 @@ namespace GFX
     void DrawHeightmap(const Camera& camera, Heightmap heightmap)
     {
       glm::mat4 model(1);
-      model = glm::scale(model, glm::vec3(5));
+      model = glm::scale(model, glm::vec3(10));
+
+      glBindTextureUnit(0, heightmap.texture);
 
       heightmapShader.Bind();
       heightmapShader.SetMat4("u_viewProj", camera.GetViewProj());
       heightmapShader.SetMat4("u_model", model);
+      heightmapShader.SetUInt("u_width", heightmap.width);
+      heightmapShader.SetUInt("u_height", heightmap.height);
 
       glBindVertexArray(emptyVao);
-      glDrawArrays(GL_TRIANGLES, 0, 6);
+      glDrawArrays(GL_TRIANGLES, 0, 6 * heightmap.width * heightmap.height);
     }
   };
 

@@ -16,6 +16,7 @@ set(source_files
 	src/gfx/renderer.cpp
 	src/engine.cpp
 	src/components.cpp
+	src/sim/erosion.cpp
 )
 
 set(header_files
@@ -30,6 +31,7 @@ set(header_files
 	src/engine.h
 	src/components.h
 	src/world.h
+	src/sim/erosion.h
 )
 
 add_executable(engine ${source_files} ${header_files})
